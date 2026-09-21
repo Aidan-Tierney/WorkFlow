@@ -1,7 +1,7 @@
 
 
 import { supabase } from '@/lib/supabase'
-
+import TaskRow from './TaskRow'
 export default async function Home() {
   const { data, error } = await supabase.from('tasks').select()
 
@@ -9,6 +9,12 @@ export default async function Home() {
     return <p>Error: {error.message}</p>
   }
 
-  return <pre>{JSON.stringify(data, null, 2)}</pre>
+  return (
+  <ul>
+    {data.map((task) => (
+      <TaskRow key={task.id} task={task} />
+    ))}
+  </ul>
+)
 }
 
