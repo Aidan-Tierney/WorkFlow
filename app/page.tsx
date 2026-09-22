@@ -1,7 +1,8 @@
-
+//Fix this
 
 import { supabase } from '@/lib/supabase'
-import TaskRow from './TaskRow'
+import Checkbox from './Checkbox'
+import Addtask from './Addtask'
 export default async function Home() {
   const { data, error } = await supabase.from('tasks').select()
 
@@ -9,12 +10,15 @@ export default async function Home() {
     return <p>Error: {error.message}</p>
   }
 
-  return (
-  <ul>
-    {data.map((task) => (
-      <TaskRow key={task.id} task={task} />
-    ))}
-  </ul>
+ return (
+  <>
+    <Addtask />
+    <ul>
+      {data.map((task) => (
+        <Checkbox key={task.id} task={task} />
+      ))}
+    </ul>
+  </>
 )
 }
 
