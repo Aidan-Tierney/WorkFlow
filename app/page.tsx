@@ -1,4 +1,3 @@
-//Fix this
 
 import { supabase } from '@/lib/supabase'
 import Checkbox from './Checkbox'
@@ -11,14 +10,15 @@ export default async function Home() {
   }
 
  return (
-  <>
+  <div className="max-w-2xl mx-auto p-8">
     <Addtask />
-    <ul>
+    <ul className="list-none">
       {data.map((task) => (
         <Checkbox key={task.id} task={task} />
       ))}
     </ul>
-  </>
+
+  </div>
 )
 }
 
