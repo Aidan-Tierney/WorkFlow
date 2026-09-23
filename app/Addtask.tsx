@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 
-export default function AddTask() {
+export default function Addtask() {
   const [title, setTitle] = useState('')
   const router = useRouter()
 

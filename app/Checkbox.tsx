@@ -4,7 +4,7 @@
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 
-export default function TaskRow({
+export default function Checkbox({
   task,
 }: {
   task: { id: string; task_name: string; completed: boolean; task_date: string; task_time: string }
@@ -22,9 +22,12 @@ export default function TaskRow({
   }
 
   return (
-    <li>
+   <li className="flex items-center gap-3 py-3 border-b border-gray-200">
       <input type="checkbox" checked={task.completed} onChange={toggle} />
-      {task.task_name}
+      <span className="text-sm">{task.task_name}</span>
+      
     </li>
+    
+
   )
 }
