@@ -26,8 +26,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex">
   <aside className="w-64 border-r border-gray-400 p-4">
-    <Addtask/>
     <h2 className="font-semibold">Sidebar</h2>
+    <Addtask/>
   </aside>
 
   <main className="flex-1 p-8">
