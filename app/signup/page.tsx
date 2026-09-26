@@ -1,0 +1,61 @@
+'use client'
+
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
+
+export default function Signup() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
+  const router = useRouter()
+  const supabase = createClient()
+
+  async function handleSubmit() {
+    setErrorMessage('')
+
+    const { data, error } = await supabase.auth.signUp({
+  email: email,
+password: password,
+})
+
+
+    if (error) {
+      setErrorMessage(error.message)
+      return
+    }
+
+    router.push('/')
+  }
+
+  return (
+    <div className="max-w-sm mx-auto p-8 flex flex-col gap-3">
+      <h1 className="text-xl font-semibold">Sign up</h1>
+
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Email"
+        className="w-full border border-gray-300 rounded px-2 py-1"
+      />
+
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
+        className="w-full border border-gray-300 rounded px-2 py-1"
+      />
+
+      <button
+        onClick={handleSubmit}
+        className="w-full bg-red-500 text-white rounded px-2 py-1"
+      >
+        Sign up
+      </button>
+
+      {errorMessage && <p className="text-sm text-red-600">{errorMessage}</p>}
+    </div>
+  )
+}

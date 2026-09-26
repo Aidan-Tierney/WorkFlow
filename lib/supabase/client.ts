@@ -1,3 +1,4 @@
+//Got from supabase docs
 import { createBrowserClient } from '@supabase/ssr'
 
 export function createClient() {

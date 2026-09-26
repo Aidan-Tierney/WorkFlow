@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Addtask from "./Addtask";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,16 +23,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex">
-  <aside className="w-64 border-r border-gray-400 p-4">
-    <h2 className="font-semibold">Sidebar</h2>
-    <Addtask/>
-  </aside>
-
-  <main className="flex-1 p-8">
-    {children}
-  </main>
-</body>
+<html lang="en" className="...">
+  <body className="min-h-full">{children}</body>
+</html>
 
     </html>
   );

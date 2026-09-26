@@ -44,3 +44,13 @@ is usually the slow way.
 **Decided:** To make the checklist look nicer
 
 **Learned:** That Visual studio code and my server can disagree. Visual studio code says it's wrong but nothign was wrong
+
+## 2026-09-22 & 23
+
+**Build:** Created a sidebar and add task button and started tailwind. Started to create login page and storing new users using supabase. 
+
+**Broke:** Vercel didn't have my env variables so it wasn't updating on the url. Checkboxes were broken so I fixed with force-dynamic.
+
+**Decided:** Continue working on sign up
+
+**Learned** I have to give my environmental variables to multiple places or things break. How to set up supabase login. 
