@@ -74,3 +74,13 @@ is usually the slow way.
 **Decided:** Next to add links
 
 **Learned:** How to use console (f12) to debug. Added console.log(JSON.stringify(...)) to print out the info I needed to debug. Then figured out the problem which was most likely autopassword saves for my gmail account. 
+
+## 2026-10-12
+
+**Build:** Added a drop down menu with email and logout button
+
+**Broke:** The button did not work because the order of the function was wrong so the button couldn't be pushed. 
+
+**Decided:** To fix the current checkboxes
+
+**Learned:** More styling code to make a drop down and about typescrpt syntax through trial and error. Found out the function calls do not need {} like in C++ or Java
