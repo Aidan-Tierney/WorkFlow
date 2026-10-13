@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import Link from 'next/link'
 
 export default function Signup() {
   const [email, setEmail] = useState('')
@@ -54,6 +55,9 @@ password: password,
       >
         Sign up
       </button>
+<p className="text-sm">
+  Already have an account? <Link href="/signin" className="underline">Sign in</Link>
+</p>
 
       {errorMessage && <p className="text-sm text-red-600">{errorMessage}</p>}
     </div>

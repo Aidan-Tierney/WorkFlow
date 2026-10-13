@@ -47,10 +47,30 @@ is usually the slow way.
 
 ## 2026-09-22 & 23
 
-**Build:** Created a sidebar and add task button and started tailwind. Started to create login page and storing new users using supabase. 
+**Build:** Created a sidebar and add task button and started tailwind. Started to create signup page and storing new users using supabase. 
 
 **Broke:** Vercel didn't have my env variables so it wasn't updating on the url. Checkboxes were broken so I fixed with force-dynamic.
 
 **Decided:** Continue working on sign up
 
 **Learned** I have to give my environmental variables to multiple places or things break. How to set up supabase login. 
+
+## 2026-10-8
+
+**Build:** Made a signin page
+
+**Broke:** There was a typescript error: "Email" does not exist... I cannot signin using my own email
+
+**Decided:** Continue working on signin and signup
+
+**Learned:** Passwords are not reading
+
+## 2026-10-11
+
+**Build:** Debugged my signin/signup page
+
+**Broke:** Network tab in console showed invalid_credentials
+
+**Decided:** Next to add links
+
+**Learned:** How to use console (f12) to debug. Added console.log(JSON.stringify(...)) to print out the info I needed to debug. Then figured out the problem which was most likely autopassword saves for my gmail account. 
