@@ -26,7 +26,7 @@ export default function Usermenu({
                 {firstLetter}
             </button>
             {open && (
-                <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow p-2">
+                <div className="absolute left-0 mt-2 w-48 bg-white border rounded shadow p-2">
                     <p className="text-sm text-gray-600 truncate">{email}</p>
                     <button onClick={handleSignOut} className="w-full text-left text-sm py-1">
                         Sign out

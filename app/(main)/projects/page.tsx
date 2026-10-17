@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import Addproject from '@/app/Addproject'
+import Link from 'next/dist/client/link'
 export default async function ProjectPage() {
   const supabase = await createClient()
   const { data, error } = await supabase.from('projects').select()
@@ -14,7 +15,9 @@ export default async function ProjectPage() {
     <Addproject />
     <ul className="list-none">
       {data.map((project) => (
-        <li key={project.id}>{project.project_name}</li>
+        <li key={project.id}>
+            <Link href={`/projects/${project.id}`}>{project.project_name}</Link>
+        </li>
       ))}
     </ul>
   </div>

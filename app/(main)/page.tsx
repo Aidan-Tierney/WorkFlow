@@ -4,7 +4,8 @@ import { createClient } from '@/lib/supabase/server'
 import Checkbox from '../Checkbox'
 export default async function Home() {
   const supabase = await createClient()
-  const { data, error } = await supabase.from('tasks').select()
+  const { data, error } = await supabase.from('tasks').select().is('project_id', null).is('completed', false)
+
 
   if (error) {
     return <p>Error: {error.message}</p>

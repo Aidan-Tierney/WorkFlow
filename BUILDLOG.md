@@ -94,3 +94,13 @@ is usually the slow way.
 **Decided:** Add projects button. Add remove task button.
 
 **Learned:** More syntax such as ? optional chaining and type narrowing with &&. Defualt vs. named exports. Server vs. client components and Supabase returns errors so silent failures can happen. What optimist updates are and the reload test.
+
+## 2026-10-15 & 16
+
+**Build:** Dashboard and Projects Link in the task bar. Projects tabled completed. RLS, policy, and GRANT for projects and can add new projects.
+
+**Broke:** I pointed to a page that doesn't exist. I put the wrong code in the wrong files when switching code around.
+
+**Decided:** That deleting a project deletes its tasks. Need to make a remove tasks button still
+
+**Learned:** Links go places but buttons do things. .map() needs a unique key. How to use the Timeline to get old code back incase something was deleted. 

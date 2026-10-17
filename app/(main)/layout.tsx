@@ -20,7 +20,6 @@ if (!data.user) {
     <div className="min-h-full flex">
       <aside className="w-64 border-r border-gray-400 p-4">
         <div className="flex justify-between items-center">
-        <h2 className="font-semibold">Sidebar</h2>
         
         {emailname && (
 <Usermenu email={emailname} />
@@ -32,6 +31,9 @@ if (!data.user) {
        </div>
        <div className="flex flex-col gap-2">
          <Link href="/projects" className="underline">Projects</Link>
+       </div>
+       <div className="flex flex-col gap-2">
+       <Link href="/completed" className="underline">Completed</Link>
        </div>
       </aside>
 
