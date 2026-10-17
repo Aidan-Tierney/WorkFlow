@@ -1,8 +1,9 @@
 export const dynamic = 'force-dynamic'
 //This tell the page to change faster but slows down the page
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase/server'
 import Checkbox from '../Checkbox'
 export default async function Home() {
+  const supabase = await createClient()
   const { data, error } = await supabase.from('tasks').select()
 
   if (error) {
@@ -19,4 +20,3 @@ export default async function Home() {
   </div>
 )
 }
-

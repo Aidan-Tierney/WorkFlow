@@ -2,20 +2,26 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
-
+import { createClient } from '@/lib/supabase/client'
+const supabase = createClient()
 export default function Addtask() {
   const [title, setTitle] = useState('')
+  const [saving, setSaving] = useState(false)
   const router = useRouter()
 
   async function add() {
     if (!title.trim()) return
-
-    await supabase.from('tasks').insert({ task_name: title })
-
+    setSaving(true)
     setTitle('')
+    const { error } = await supabase.from('tasks').insert({ task_name: title })
+
+
+    if (error) { setTitle(title)
+       console.error(error) }
     router.refresh()
+    setSaving(false)
   }
+
 
   return (
     <div>
@@ -23,8 +29,11 @@ export default function Addtask() {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Add a task"
+        
       />
-      <button onClick={add}>Add</button>
+      <button disabled={saving} onClick={add}>
+        {saving ? 'Adding...' : 'Add'}
+      </button>
     </div>
   )
 }

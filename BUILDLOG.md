@@ -84,3 +84,13 @@ is usually the slow way.
 **Decided:** To fix the current checkboxes
 
 **Learned:** More styling code to make a drop down and about typescrpt syntax through trial and error. Found out the function calls do not need {} like in C++ or Java
+
+## 2026-10-13 & 14
+
+**Build:** Login indicator: A circle with the first letter of the email. Usermenu dropdown plus a signout button. Redirect to sign in if not logged in. Checkbox is now optimistic. Error check for adding a task
+
+**Broke:** Two export defaults in one file and a misplaced } that made the circle account vanish. Optimistic save was opposite of what is was supposed to be. "Permission denied for table tasks"
+
+**Decided:** Add projects button. Add remove task button.
+
+**Learned:** More syntax such as ? optional chaining and type narrowing with &&. Defualt vs. named exports. Server vs. client components and Supabase returns errors so silent failures can happen. What optimist updates are and the reload test.
