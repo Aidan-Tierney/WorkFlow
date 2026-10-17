@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import Usermenu from '../Usermenu'
 import {redirect} from 'next/navigation'
 import Link from 'next/link'
+import Sidebar from '../Sidebar'
 export default async function MainLayout({
   children,
 }: {
@@ -18,7 +19,7 @@ if (!data.user) {
 // data.user is the user object if logged in, or null if not
   return (
     <div className="min-h-full flex">
-      <aside className="w-64 border-r border-gray-400 p-4">
+      <Sidebar>
         <div className="flex justify-between items-center">
         
         {emailname && (
@@ -35,7 +36,7 @@ if (!data.user) {
        <div className="flex flex-col gap-2">
        <Link href="/completed" className="underline">Completed</Link>
        </div>
-      </aside>
+      </Sidebar>
 
       <main className="flex-1 p-8">{children}</main>
     </div>
