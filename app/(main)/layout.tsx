@@ -34,6 +34,9 @@ if (!data.user) {
          <Link href="/projects" className="underline">Projects</Link>
        </div>
        <div className="flex flex-col gap-2">
+         <Link href="/calendar" className="underline">Calendar</Link>
+       </div>
+       <div className="flex flex-col gap-2">
        <Link href="/completed" className="underline">Completed</Link>
        </div>
       </Sidebar>

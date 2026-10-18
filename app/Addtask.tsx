@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 const supabase = createClient()
 export default function Addtask({projectId}:{projectId?:string}) {
   const [title, setTitle] = useState('')
+  const [dueDate, setDueDate] = useState('')
   const [saving, setSaving] = useState(false)
   const router = useRouter()
 
@@ -13,7 +14,7 @@ export default function Addtask({projectId}:{projectId?:string}) {
     if (!title.trim()) return
     setSaving(true)
     setTitle('')
-    const { error } = await supabase.from('tasks').insert({ task_name: title, project_id: projectId })
+    const { error } = await supabase.from('tasks').insert({ task_name: title, project_id: projectId, task_date: dueDate ? dueDate : null })
 
 
     if (error) { setTitle(title)
@@ -25,6 +26,7 @@ export default function Addtask({projectId}:{projectId?:string}) {
 
   return (
     <div>
+      <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
       <input
         value={title}
         onChange={(e) => setTitle(e.target.value)}
