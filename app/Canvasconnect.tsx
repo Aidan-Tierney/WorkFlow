@@ -1,3 +1,4 @@
+//Allows users to connect their Canvas account by entering the Canvas URL and token.
 'use client'
 
 import { useState } from 'react'

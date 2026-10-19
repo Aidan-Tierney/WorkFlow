@@ -104,3 +104,60 @@ is usually the slow way.
 **Decided:** That deleting a project deletes its tasks. Need to make a remove tasks button still
 
 **Learned:** Links go places but buttons do things. .map() needs a unique key. How to use the Timeline to get old code back incase something was deleted. 
+
+## Building Workflow Convo 10/19
+1. What does a line between two tasks mean: "must happen before" or "is part of"?
+
+A line could mean both. I was thinking more of is part of or needed befroe but can still check off past the cahin to check all before it.
+
+2. Which way does work flow? Is the project the finish line, or the start?
+
+It starts at the right with the project being the finish line. Actally with how the app is coded now I want each project to be a catagory and then main task with be the finish line. Fro example I can click project and it will have all of the tasks and sub tasks in it.
+
+3. Can a task connect to two tasks (a tree vs. a web)?
+
+Yes in my diagram i have an example.
+
+4. What's the "placeholder" box?
+
+The placeholder box was a continueation of the tasks above. I want the pattern to not just be a straigth line start up middle down middle up repeat.
+
+5. What's the box in the middle labeled "? or box"?
+
+Task probalby im not sure what you ask.
+
+6. What do the arrows mean?
+
+I just drew it so it was easier to read but that could be an idea if tasks fill up the screen too much.
+
+7. How do you create a connection?
+
+Maybe a button at the end of the box that makes a connect i feel like tha twould be easy for now.
+
+8. Are boxes placed automatically, or dragged?
+
+Maybe drag them later but right now lets do automatic.
+
+9. What happens when you check off a task?
+
+When you check off it goes to completed and dissapears. It would be cool to make the line burn like a ticking bomb but that can be later.
+
+10. One project per screen, or all projects on one screen?
+
+One project per screen with how many tasks/subtasks there is.
+
+11. How do Canvas assignments fit in?
+
+Each project of canvas will be a catagory.
+
+Why a workflow instead of a list?
+
+workflow will allow me to stay on task and more organized
+
+Follow-up: tree or web?
+
+I agree on tree first.
+
+Follow-up: what happens to subtasks when a task is deleted?
+
+delete subtaks too

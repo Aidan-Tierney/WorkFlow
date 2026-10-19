@@ -1,3 +1,4 @@
+//Allows users to sync their canvas creating projects and tasks in the app from canvas
 'use server'
 import { createClient } from '@/lib/supabase/server'
 

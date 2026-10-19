@@ -1,3 +1,4 @@
+//Pressing on the user icon will show a dropdown menu with the user's email, a link to settings, and a sign-out button.
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'

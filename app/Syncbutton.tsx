@@ -1,3 +1,4 @@
+//Button to sync the canvas with the server.
 'use client'
 import { useState } from 'react'
 import {syncCanvas} from '@/app/actions/canvas'
