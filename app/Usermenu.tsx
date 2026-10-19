@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import Link from 'next/link'
 const supabase = createClient()
 
 export default function Usermenu({
@@ -28,6 +29,9 @@ export default function Usermenu({
             {open && (
                 <div className="absolute left-0 mt-2 w-48 bg-white border rounded shadow p-2">
                     <p className="text-sm text-gray-600 truncate">{email}</p>
+                     <div>
+         <Link href="/settings"className="w-full text-left text-sm py-1">Settings</Link>
+       </div>
                     <button onClick={handleSignOut} className="w-full text-left text-sm py-1">
                         Sign out
                     </button>
