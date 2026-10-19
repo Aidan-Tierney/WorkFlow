@@ -15,7 +15,7 @@ const { data: connection } = await supabase
     if (!connection) {
         return { error: 'Canvas not connected' }
     }
-    const response = await fetch(`${connection.canvas_url}/api/v1/courses`, {
+    const response = await fetch(`${connection.canvas_url}/api/v1/courses?per_page=100`, {
         headers: {
             'Authorization': `Bearer ${connection.canvas_token}`
         }
@@ -24,5 +24,18 @@ const { data: connection } = await supabase
         return { error: `Canvas said ${response.status}` }
     }
     const courses = await response.json()
-    return { count: courses.length }
+    const rows = courses
+    .filter((course: {id: number, name?: string}) => course.name)
+    .map((course: {id: number, name: string}) => ({
+        project_name: course.name,
+        canvas_course_id: course.id,
+        user_id: data.user.id
+    }))
+    const { error: saveError } = await supabase
+    .from('projects')
+    .upsert(rows, { onConflict: 'user_id,canvas_course_id', ignoreDuplicates: true })
+    if (saveError) {
+        return { error: `Failed to save projects: ${saveError.message}` }
+    }
+    return { count: rows.length }
 }
