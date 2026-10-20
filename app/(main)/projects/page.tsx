@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import Addproject from '@/app/Addproject'
-import Link from 'next/dist/client/link'
+import Link from 'next/link'
 export default async function ProjectPage() {
   const supabase = await createClient()
   const { data, error } = await supabase.from('projects').select()
