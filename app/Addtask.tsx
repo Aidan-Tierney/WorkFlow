@@ -4,6 +4,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import Button from '@/app/ui/Button'
+import Input from '@/app/ui/Input'
 const supabase = createClient()
 export default function Addtask({projectId, parentTaskId}:{projectId?:string, parentTaskId?:string}) {
   const [title, setTitle] = useState('')
@@ -27,16 +29,16 @@ export default function Addtask({projectId, parentTaskId}:{projectId?:string, pa
 
   return (
     <div>
-      <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
-      <input
+      <Input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
+      <Input
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Add a task"
         
       />
-      <button disabled={saving} onClick={add}>
+      <Button disabled={saving} onClick={add}>
         {saving ? 'Adding...' : 'Add'}
-      </button>
+      </Button>
     </div>
   )
 }

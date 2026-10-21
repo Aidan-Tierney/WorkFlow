@@ -6,3 +6,4 @@ bug #1 (sorting)
 the remove-task button
 the trailing-slash URL check
 the settings page: display name, password, email
+ "checking a middle task hides its subtasks → needs cascade," so it doesn't get forgotten

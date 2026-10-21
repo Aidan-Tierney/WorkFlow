@@ -2,7 +2,7 @@ import Addtask from '../Addtask'
 import { createClient } from '@/lib/supabase/server'
 import Usermenu from '../Usermenu'
 import {redirect} from 'next/navigation'
-import Link from 'next/link'
+import NavLink  from '../ui/NavLink'
 import Sidebar from '../Sidebar'
 export default async function MainLayout({
   children,
@@ -27,18 +27,13 @@ if (!data.user) {
  )}
 </div>
         <Addtask />
-        <div className="flex flex-col gap-2">
-       <Link href="/" className="underline">Dashboard</Link>
-       </div>
-       <div className="flex flex-col gap-2">
-         <Link href="/projects" className="underline">Projects</Link>
-       </div>
-       <div className="flex flex-col gap-2">
-         <Link href="/calendar" className="underline">Calendar</Link>
-       </div>
-       <div className="flex flex-col gap-2">
-       <Link href="/completed" className="underline">Completed</Link>
-       </div>
+        <nav className="flex flex-col gap-1 mt-4">
+          <NavLink href="/" label="Dashboard" />
+          <NavLink href="/calendar" label="Calendar" />
+          <NavLink href="/projects" label="Projects" />
+          <NavLink href="/completed" label="Completed" />
+
+       </nav>
       </Sidebar>
 
       <main className="flex-1 p-8">{children}</main>

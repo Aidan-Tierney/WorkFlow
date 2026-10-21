@@ -2,6 +2,7 @@
 'use client'
 import { useState } from 'react'
 import {syncCanvas} from '@/app/actions/canvas'
+import Button from '@/app/ui/Button'
 
 export default function SyncButton() {
   const [syncing, setSyncing] = useState(false)
@@ -22,12 +23,12 @@ export default function SyncButton() {
 
 return (
     <div className="flex flex-col gap-2">
-        <button
+        <Button
             disabled={syncing}
             onClick={handleSync}
         >
             {syncing ? 'Syncing...' : 'Sync Canvas'}
-        </button>
+        </Button>
         {message && <p>{message}</p>}
     </div>
 )

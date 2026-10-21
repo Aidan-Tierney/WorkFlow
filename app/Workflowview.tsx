@@ -22,7 +22,7 @@ export default function Workflowview({ tasks }: { tasks: any[] }) {
     }
     return (
         <div
-            className="relative"
+            className="relative ml-auto"
             style={{ width: (maxColumn + 1) * COLUMN_WIDTH, height: (maxRow + 1) * ROW_HEIGHT }}
         >
             <svg className="absolute inset-0 pointer-events-none" width={(maxColumn + 1) * COLUMN_WIDTH} height={(maxRow + 1) * ROW_HEIGHT}>

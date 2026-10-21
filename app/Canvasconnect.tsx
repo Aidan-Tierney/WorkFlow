@@ -4,6 +4,9 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import Button from '@/app/ui/Button'
+import Input from '@/app/ui/Input'
+
 export default function CanvasConnect() {
   const [url, setUrl] = useState('')     
   const [token, setToken] = useState('')   
@@ -29,11 +32,11 @@ export default function CanvasConnect() {
 
   return (
     <div>
-      <input type="text" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="Canvas URL" />
-      <input type="password" value={token} onChange={(e) => setToken(e.target.value)} placeholder="Canvas Token" />
-      <button disabled={saving} onClick={save}>
+      <Input type="text" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="Canvas URL" />
+      <Input type="password" value={token} onChange={(e) => setToken(e.target.value)} placeholder="Canvas Token" />
+      <Button disabled={saving} onClick={save}>
         {saving ? 'Saving...' : 'Save'}
-      </button>
+      </Button>
     </div>
   )
 }

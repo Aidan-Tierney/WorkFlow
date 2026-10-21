@@ -4,6 +4,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import Button from '@/app/ui/Button'
+import Input from '@/app/ui/Input'
 const supabase = createClient()
 export default function Addproject() {
   const [title, setTitle] = useState('')
@@ -26,15 +28,15 @@ export default function Addproject() {
 
   return (
     <div>
-      <input
+      <Input
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="Add a project"
         
       />
-      <button disabled={saving} onClick={add}>
+      <Button disabled={saving} onClick={add}>
         {saving ? 'Adding...' : 'Add'}
-      </button>
+      </Button>
     </div>
   )
 }

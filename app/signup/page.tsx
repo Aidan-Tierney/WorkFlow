@@ -5,6 +5,8 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
+import Button from '@/app/ui/Button'
+import Input from '@/app/ui/Input'
 
 export default function Signup() {
   const [email, setEmail] = useState('')
@@ -34,7 +36,7 @@ password: password,
     <div className="max-w-sm mx-auto p-8 flex flex-col gap-3">
       <h1 className="text-xl font-semibold">Sign up</h1>
 
-      <input
+      <Input
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
@@ -42,7 +44,7 @@ password: password,
         className="w-full border border-gray-300 rounded px-2 py-1"
       />
 
-      <input
+      <Input
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
@@ -50,12 +52,12 @@ password: password,
         className="w-full border border-gray-300 rounded px-2 py-1"
       />
 
-      <button
+      <Button
         onClick={handleSubmit}
         className="w-full bg-red-500 text-white rounded px-2 py-1"
       >
         Sign up
-      </button>
+      </Button>
 <p className="text-sm">
   Already have an account? <Link href="/signin" className="underline">Sign in</Link>
 </p>

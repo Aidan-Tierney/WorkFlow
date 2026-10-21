@@ -17,20 +17,24 @@ export default async function Projectpage({
     .eq('id', id)
     .single()
 
-    const { data: tasks } = await supabase
+  const { data: tasks } = await supabase
     .from('tasks')
     .select()
     .eq('project_id', id).is('completed', false)
 
-    if (!project) {
+  if (!project) {
     return <p>Project not found</p>
   }
-  
+
   return (
-    <div className="max-w-2xl mx-auto p-8">
+    <div className="w-full p-8 ">
       <h1 className="text-xl font-semibold">{project.project_name}</h1>
-      <Addtask projectId={id} />
-      <Workflowview tasks={tasks ?? []} />
+      <div className="max-w-md">
+        <Addtask projectId={id} />
       </div>
+
+      <Workflowview tasks={tasks ?? []} />
+    </div>
   )
+
 }

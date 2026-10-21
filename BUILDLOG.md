@@ -161,3 +161,15 @@ I agree on tree first.
 Follow-up: what happens to subtasks when a task is deleted?
 
 delete subtaks too
+
+## Design Choices Convo
+
+Mostly gray. About 90% of the screen is white, off-white, or gray.
+
+One accent color. It shows up only on the thing you should click or notice: the “Add task” button, the active nav item, a checkbox ring.
+
+Lots of space. Rows are 32–44px tall, with 8–16px between elements. Nothing touches.
+
+Hierarchy comes from text, not color. They use font weight (400 vs 500/600) and gray shades (dark text vs. muted text), not extra colors.
+
+Meaningful colors are reserved. Red means overdue or priority 1, and it isn’t used as decoration.
