@@ -1,13 +1,29 @@
+'use client'
 import Checkbox from "@/app/Checkbox";
-import AddSubtask from "@/app/AddSubtask";
 import { layoutTasks } from "@/app/tree";
+import Link from "next/link";
+import {useState} from 'react'
+import {Plus} from 'lucide-react'
+import Addtask from "./Addtask";
+import { getDescendantIds } from "@/app/tree";
 const COLUMN_WIDTH = 220
 const ROW_HEIGHT = 70
 const BOX_WIDTH = 180
 const BOX_HEIGHT = 50
 
-export default function Workflowview({ tasks }: { tasks: any[] }) {
-    const positions = layoutTasks(tasks)
+export default function Workflowview({ tasks, ghostIds }: { tasks: any[]; ghostIds?: Set<string> }) {
+    const [draftParentId, setDraftParentId] = useState<string | null> (null)
+    const draftParent = tasks.find((t) => t.id === draftParentId)
+    const shownTasks = draftParent
+    ? [...tasks, {
+        id: 'draft',
+        task_name: 'New Task',
+        parent_task_id: draftParent.id,
+        project_id: draftParent.project_id,
+        completed: false,
+    }]
+    : tasks
+    const positions = layoutTasks(shownTasks)
     let maxColumn = 0
     let maxRow = 0
     for (const pos of positions.values()) {
@@ -26,7 +42,7 @@ export default function Workflowview({ tasks }: { tasks: any[] }) {
             style={{ width: (maxColumn + 1) * COLUMN_WIDTH, height: (maxRow + 1) * ROW_HEIGHT }}
         >
             <svg className="absolute inset-0 pointer-events-none" width={(maxColumn + 1) * COLUMN_WIDTH} height={(maxRow + 1) * ROW_HEIGHT}>
-            {tasks.map((task) => {
+            {shownTasks.map((task) => {
                 if (!task.parent_task_id) return null
                 const child = positions.get(task.id)
                 const parent = positions.get(task.parent_task_id)
@@ -47,9 +63,45 @@ export default function Workflowview({ tasks }: { tasks: any[] }) {
                 )
             })}
             </svg>
-            {tasks.map((task) => {
+            {shownTasks.map((task) => {
                 const pos = positions.get(task.id)
                 if (!pos) return null
+                if (task.id === 'draft'){
+                    return (
+                        <div
+                        key={task.id}
+                        className="absolute border-2 border-accent rounded p-2 bg-white flex items-center"
+                        style={{left: boxLeft(pos), top: boxTop(pos), width: BOX_WIDTH, height: BOX_HEIGHT}}
+                        >
+                            <Addtask
+                            compact
+                            projectId={task.project_id}
+                            parentTaskId={task.parent_task_id}
+                            onCancel={() => setDraftParentId(null)}
+                            />
+                            </div>
+                    )
+                }
+                const isGhost = ghostIds?.has(task.id) ?? false
+
+                if (isGhost){
+                    return (< Link
+                        key={task.id}
+                        href={task.completed ? '/completed' : 
+                            (task.project_id ? `/projects/${task.project_id}` : '/')}
+                        className="absolute border rounded p-2 border-dashed opacity-50 flex items-center gap-1"
+                        style={{
+                            left: boxLeft(pos),
+                            top: boxTop(pos),
+                            width: BOX_WIDTH,
+                            height: BOX_HEIGHT
+                        }}
+                    >
+                
+                        {task.task_name}
+                    </Link>
+                )
+                }
                 return (
                     < div
                         key={task.id}
@@ -61,8 +113,14 @@ export default function Workflowview({ tasks }: { tasks: any[] }) {
                             height: BOX_HEIGHT
                         }}
                     >
-                        <Checkbox task={task} />
-                        <AddSubtask projectId={task.project_id} parentTaskId={task.id} />
+                        <Checkbox task={task} descendantIds={getDescendantIds(task.id,tasks)} />
+                        {!task.completed && (
+                            <button
+                            onClick={() => setDraftParentId(task.id)}
+                                className="text-muted hover:text-accent">
+                                <Plus size={16}/>
+                                </button>
+                        )}
                     </div>
                 )
             })}

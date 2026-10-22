@@ -173,3 +173,39 @@ Lots of space. Rows are 32–44px tall, with 8–16px between elements. Nothing 
 Hierarchy comes from text, not color. They use font weight (400 vs 500/600) and gray shades (dark text vs. muted text), not extra colors.
 
 Meaningful colors are reserved. Red means overdue or priority 1, and it isn’t used as decoration.
+
+## 2026-10-17
+Built: Completed page, sidebar that collapes and due dates on task. Settings page and canvas table in Supabase with a sync button
+
+Broke: Mixed up && and || in the empty-field check. Return inside a loop so it would end early
+
+Learned: 'use server' keeps the token on the server and fetch does't trhow on 401 and 404 errors. Also learned about a timezone trap
+
+Decided: Canvas token are never sent back to the browser so people cannot access sensitive information.
+
+## 2026-10-18
+Built: Canvas courses become project; assignments become tasks.
+
+Broke: Nameless Canvas courses (old courses non-existant) broke the save. Placeholders forgot to be changed
+
+Learned: .filter(), .map(), .includes(). Maps for lookups, server longs go to the terminal not the browser.
+
+Decided: Sync can mark tasks done but not undone and only unsubmitted assignemnts get created.
+
+## 2026-10-19
+Built: Workflow psudocode and the parent_task_id column for cascade delete. TaskRecursion and the + button to add tasks.
+
+Broke: Column named parent_tasks_id instead of parent_task_id and found it with console.error
+
+Learned: recursion: root vs base case vs leaves and why every call gets the full list.
+
+Decide: Deleting a task deletes its subtaks (Look at design Q&A)
+
+## 2026-10-20
+Build: LayoutTasks, boxes with absolute and style. SVG elbow lines and color tokens. UI upgrades making it look more polished. Updated Next.js
+
+Broke: The whole tree duplicated. classname is supposed to be className and I fliped the formula for SVG lines. Also used boxLeft for y1.
+
+Learned: SVG path commands (M,H,V); DRY acronym with helper functions. How to read npm audit rport. How to use React Flow
+
+Decided: To use Google blue and build the layout myself

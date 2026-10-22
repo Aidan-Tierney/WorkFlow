@@ -1,9 +1,10 @@
-import Addtask from '../Addtask'
+import SidebarAddtask from '../SidebarAddtask'
 import { createClient } from '@/lib/supabase/server'
 import Usermenu from '../Usermenu'
 import {redirect} from 'next/navigation'
 import NavLink  from '../ui/NavLink'
 import Sidebar from '../Sidebar'
+import { Inbox, Folder, Calendar, CircleCheck, CircleDashed } from "lucide-react";
 export default async function MainLayout({
   children,
 }: {
@@ -18,7 +19,7 @@ if (!data.user) {
   }
 // data.user is the user object if logged in, or null if not
   return (
-    <div className="min-h-full flex">
+    <div className="min-h-screen flex">
       <Sidebar>
         <div className="flex justify-between items-center">
         
@@ -26,13 +27,13 @@ if (!data.user) {
 <Usermenu email={emailname} />
  )}
 </div>
-        <Addtask />
+        <SidebarAddtask />
         <nav className="flex flex-col gap-1 mt-4">
-          <NavLink href="/" label="Dashboard" />
-          <NavLink href="/calendar" label="Calendar" />
-          <NavLink href="/projects" label="Projects" />
-          <NavLink href="/completed" label="Completed" />
-
+          <NavLink href="/" label="Dashboard" icon={<Inbox size={18} />} />
+          <NavLink href="/calendar" label="Calendar" icon={<Calendar size={18} />} />
+          <NavLink href="/projects" label="Projects" icon={<Folder size={18} />} />
+          <NavLink href="/completed" label="Completed" icon={<CircleCheck size={18} />} />
+          <NavLink href="/settings" label="Connect Canvas" icon={<CircleDashed size={18} />} />
        </nav>
       </Sidebar>
 

@@ -17,7 +17,7 @@ export default function AddSubtask({
             >
                 {"+"}
             </button>
-            {open && <Addtask projectId={projectId} parentTaskId={parentTaskId} />}
+            {open && <Addtask projectId={projectId} parentTaskId={parentTaskId} onCancel={()=> setOpen(false)}/>}
         </div>
     
     )

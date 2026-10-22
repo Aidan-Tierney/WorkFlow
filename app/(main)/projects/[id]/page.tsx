@@ -1,7 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
-import TaskRecursion from '@/app/TaskRecursion'
 import Addtask from '@/app/Addtask'
-import { layoutTasks } from '@/app/tree'
+import { layoutTasks, withAncestors } from '@/app/tree'
 import Workflowview from '@/app/Workflowview'
 export default async function Projectpage({
   params,
@@ -17,22 +16,25 @@ export default async function Projectpage({
     .eq('id', id)
     .single()
 
-  const { data: tasks } = await supabase
+  const { data: allTasks } = await supabase
     .from('tasks')
     .select()
-    .eq('project_id', id).is('completed', false)
+    .eq('project_id', id)
 
   if (!project) {
     return <p>Project not found</p>
   }
+  const tasks = allTasks ?? []
+const visible = withAncestors(tasks.filter((t) => !t.completed), tasks)
+const ghostIds = new Set(visible.filter((t) => t.completed).map((t)=> t.id))
 
   return (
     <div className="w-full p-8 ">
       <h1 className="text-xl font-semibold">{project.project_name}</h1>
       <div className="max-w-md">
-        <Addtask projectId={id} />
+        <Addtask projectId={id}/>
       </div>
-
+<Workflowview tasks={visible} ghostIds={ghostIds}/>
       <Workflowview tasks={tasks ?? []} />
     </div>
   )

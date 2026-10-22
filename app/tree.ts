@@ -1,3 +1,5 @@
+
+
 type Position = { column: number; row: number }
 export function layoutTasks(allTasks: any[]){
     const postions = new Map<string, Position>()
@@ -24,4 +26,26 @@ export function layoutTasks(allTasks: any[]){
     }
     return postions
     
+}
+export function getDescendantIds(taskId:string, allTasks: any[]): string[]{
+    const ids: string[] = []
+    const children = allTasks.filter((t) => t.parent_task_id === taskId)
+    for (const child of children){
+        ids.push(child.id)
+        ids.push(...getDescendantIds(child.id,allTasks))
+    }
+    return ids
+}
+export function withAncestors(startTasks: any[], allTasks: any[]){
+    const byId = new Map()
+    for (const t of allTasks) byId.set(t.id, t)
+        const keep = new Set<string>()
+    for (const t of startTasks){
+        let current = t
+        while (current){
+            keep.add(current.id)
+            current = byId.get(current.parent_task_id)
+        }
+    }
+    return allTasks.filter((t) => keep.has(t.id))
 }
