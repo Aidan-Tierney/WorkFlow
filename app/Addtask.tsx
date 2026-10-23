@@ -7,9 +7,9 @@ import { createClient } from '@/lib/supabase/client'
 import { ArrowUp, X } from 'lucide-react'
 
 const supabase = createClient()
-export default function Addtask({ projectId, parentTaskId, onCancel, compact }: { projectId?: string, parentTaskId?: string, onCancel?: () => void, compact?: boolean }) {
+export default function Addtask({ projectId, parentTaskId, onCancel, compact, defaultDate }: { projectId?: string, parentTaskId?: string, onCancel?: () => void, compact?: boolean,defaultDate?: string }) {
+  const [dueDate, setDueDate] = useState(defaultDate ?? '')
   const [title, setTitle] = useState('')
-  const [dueDate, setDueDate] = useState('')
   const [saving, setSaving] = useState(false)
   const router = useRouter()
 
