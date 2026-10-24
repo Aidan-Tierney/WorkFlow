@@ -4,6 +4,7 @@
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useState } from 'react'
+import { Trash2 } from 'lucide-react'
 const supabase = createClient()
 
 export default function Checkbox({
@@ -15,12 +16,58 @@ export default function Checkbox({
 }) {
   const router = useRouter()
   const [checked, setChecked] = useState(task.completed)
+  const [expanded, setExpanded] = useState(false)
+  const [name, setName] = useState(task.task_name)
+  const [date, setDate] = useState(task.task_date ?? '')
 
+  async function saveName() {
+    const trimmed = name.trim()
+    if (!trimmed || trimmed === task.task_name) {
+      setName(task.task_name)
+      return
+    }
+    const { error } = await supabase
+      .from('tasks')
+      .update({ task_name: trimmed })
+      .eq('id', task.id)
+    if (error) {
+      setName(task.task_name)
+      console.error(error)
+    }
+    router.refresh
+  }
+  async function saveDate(newDate: string) {
+    const { error } = await supabase
+      .from('tasks')
+      .update({ task_date: newDate || null })
+      .eq('id', task.id)
+    if (error) {
+      setName(task.task_date ?? '')
+      console.error(error)
+    }
+    router.refresh
+  }
+
+  async function deleteTask() {
+    const count = descendantIds.length
+    const message = count > 0
+      ? `Delete "${task.task_name}" and its ${count} subtask${count === 1 ? '' : 's'}?`
+      : `Delete "${task.task_name}"?`
+    if (!confirm(message)) return
+
+    const { error } = await supabase.from('tasks').delete().eq('id', task.id)
+    if (error) {
+      console.error(error)
+      return
+    }
+    setExpanded(false)
+    router.refresh()
+  }
 
 
   async function toggle() {
     const newChecked = !checked
-    
+
     setChecked(newChecked)
     const ids = newChecked ? [task.id, ...descendantIds] : [task.id]
     //Screen changes here
@@ -36,14 +83,40 @@ export default function Checkbox({
 
 
   }
- 
+
   return (
-    <li className="flex items-center gap-3 py-3 border-b border-gray-200">
+    <li className="flex items-center gap-3 min-w-0 flex-1">
       <input type="checkbox" checked={checked} onChange={toggle} />
-      <span className="text-sm">{task.task_name}</span>
-
+      <span onClick={() => setExpanded(true)} className="text-sm truncate cursor-pointer">{task.task_name}</span>
+      {expanded && (
+        <>
+          <div className="fixed inset-0 z-10" onClick={() => setExpanded(false)} />
+          <div className="left-0 absolute top-0 z-20 w-72 bg-white border border-line rounded-xl shadow-lg p-3 flex flex-col gap-2">
+            <textarea
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              onBlur={saveName}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') { e.preventDefault(); e.currentTarget.blur() }
+              }}
+              autoFocus
+              rows={3}
+              className="text-sm w-full resize-none outline-none"
+            />
+            <div className="flex items-center justify-between">
+              <input
+                type="date"
+                value={date}
+                onChange={(e) => { setDate(e.target.value); saveDate(e.target.value) }}
+                className="text-xs text-muted border border-line rounded-md px-2 h-7 w-fit"
+              />
+              <button onClick={deleteTask} className="text-muted hover:text-danger">
+                <Trash2 size={16} />
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </li>
-
-
   )
 }
