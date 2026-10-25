@@ -10,18 +10,26 @@ const taskTreeSchema = z.object({
     id: z.string().describe('a temporary id like "t1", "t2", unique within this list'),
     name: z.string().describe('a short action, like "Find 3 sources"'),
     parent_id: z.string().nullable().describe('id of the parent task, or null for the one root task'),
+    
   })),
 })
 
 
-export async function generateTaskTree(description: string){
+export async function generateTaskTree(description: string, pdf?:Uint8Array){
+    const assignmentText=pdf
+    ? `See the attached PDF. Extra notes from the student: ${description}`
+    : description
+    const content: any[] = [
+        {type: 'text', text: `<mode>new_tree</mode>\n<assignment>${assignmentText}</assignment.`},
+    ]
+    if (pdf){
+        content.push({ type: 'file', data: pdf, mediaType: 'application/pdf' })
+    }
     const {output} = await generateText({
         model:anthropic(process.env.AI_MODEL!),
         system: TASK_TREE_SYSTEM_PROMPT,
-        prompt: `<mode>new_tree</mode>
-        <assignment>${description}</assignment>`,
-        output: Output.object({schema: taskTreeSchema})
-
+        messages: [{ role: 'user', content }],
+    output: Output.object({ schema: taskTreeSchema }),
     })
     return output
 }

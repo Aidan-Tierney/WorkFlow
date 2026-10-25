@@ -16,11 +16,16 @@ export default function ProjectBoard({
     const [saving, setSaving] = useState(false)
     const router = useRouter()
     const supabase = createClient()
+    const [file, setFile] = useState<File | null>(null)
 
     async function generate() {
         setGenerating(true)
         setMessage('')
-        const result = await generateTreeAction(description)
+        const formData = new FormData()
+        formData.append('description', description)
+        if (file) formData.append('file', file)
+        const result = await generateTreeAction(formData)
+
 
         if (result.error) {
             setMessage(result.error)
@@ -73,10 +78,17 @@ export default function ProjectBoard({
                     rows={4}
                     className="w-full border border-line rounded-lg p-2 text-sm"
                 />
+                <input
+                    type="file"
+                    accept="application/pdf"
+                    onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                    className="text-sm text-muted"
+                />
+
 
                 <Button
                     onClick={generate}
-                    disabled={generating || !description.trim()}
+                    disabled={generating || (!description.trim() && !file)}
                 >
                     {generating ? 'Generating...' : 'Generate with AI'}
                 </Button>
