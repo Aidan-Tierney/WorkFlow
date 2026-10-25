@@ -11,18 +11,19 @@ const ROW_HEIGHT = 70
 const BOX_WIDTH = 180
 const BOX_HEIGHT = 50
 
-export default function Workflowview({ tasks, ghostIds }: { tasks: any[]; ghostIds?: Set<string> }) {
+export default function Workflowview({ tasks, ghostIds, previewTasks}: { tasks: any[]; ghostIds?: Set<string>; previewTasks?: any[]}) {
     const [draftParentId, setDraftParentId] = useState<string | null> (null)
-    const draftParent = tasks.find((t) => t.id === draftParentId)
-    const shownTasks = draftParent
-    ? [...tasks, {
+    const baseTasks = [...tasks, ...(previewTasks ?? [])]
+    const draftParent = baseTasks.find((t) => t.id === draftParentId)
+    const shownTasks = draftParent 
+    ? [...baseTasks, {
         id: 'draft',
         task_name: 'New Task',
         parent_task_id: draftParent.id,
         project_id: draftParent.project_id,
-        completed: false,
     }]
-    : tasks
+    : baseTasks
+    
     const positions = layoutTasks(shownTasks)
     let maxColumn = 0
     let maxRow = 0
@@ -30,6 +31,7 @@ export default function Workflowview({ tasks, ghostIds }: { tasks: any[]; ghostI
         if (pos.column > maxColumn) maxColumn = pos.column
         if (pos.row > maxRow) maxRow = pos.row
     }
+    
     function boxLeft(pos: {column: number}){
         return (maxColumn - pos.column) * COLUMN_WIDTH
     }
@@ -47,6 +49,7 @@ export default function Workflowview({ tasks, ghostIds }: { tasks: any[]; ghostI
                 const child = positions.get(task.id)
                 const parent = positions.get(task.parent_task_id)
                 if (!child || !parent) return null
+                
                 const x1=boxLeft(child) + BOX_WIDTH
                 const y1=boxTop(child) + (BOX_HEIGHT/2)
                 const x2=boxLeft(parent) 
@@ -66,6 +69,16 @@ export default function Workflowview({ tasks, ghostIds }: { tasks: any[]; ghostI
             {shownTasks.map((task) => {
                 const pos = positions.get(task.id)
                 if (!pos) return null
+                if (task.id.startsWith('ai-')) {
+  return (
+    <div key={task.id} className="absolute border rounded p-2 bg-white opacity-50 flex items-center text-sm" 
+    style={{ left: boxLeft(pos), top: boxTop(pos), width: BOX_WIDTH, height: BOX_HEIGHT }}
+>
+      <span className="truncate">{task.task_name}</span>
+    </div>
+  )
+}
+
                 if (task.id === 'draft'){
                     return (
                         <div

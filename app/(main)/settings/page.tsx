@@ -1,6 +1,7 @@
 import {createClient} from '@/lib/supabase/server'
 import CanvasConnect from '@/app/Canvasconnect'
 import Syncbutton from '@/app/Syncbutton'
+import AiTest from '@/app/AiTest'
 export default async function SettingsPage() {
   const supabase = await createClient()
   const { data: connection } = await supabase
@@ -16,6 +17,7 @@ export default async function SettingsPage() {
 
       <CanvasConnect />
       <Syncbutton />
+      <AiTest/>
     </div>
   )
 }

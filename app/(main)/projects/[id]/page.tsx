@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import Addtask from '@/app/Addtask'
 import { layoutTasks, withAncestors } from '@/app/tree'
-import Workflowview from '@/app/Workflowview'
+import ProjectBoard from '@/app/ProjectBoard'
 export default async function Projectpage({
   params,
 }: {
@@ -34,8 +34,9 @@ const ghostIds = new Set(visible.filter((t) => t.completed).map((t)=> t.id))
       <div className="max-w-md">
         <Addtask projectId={id}/>
       </div>
-<Workflowview tasks={visible} ghostIds={ghostIds}/>
-      <Workflowview tasks={tasks ?? []} />
+<ProjectBoard tasks={visible} ghostIds={ghostIds} projectId={id} />
+
+
     </div>
   )
 
