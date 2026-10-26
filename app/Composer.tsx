@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { buildOutline } from '@/app/tree'
 import {Paperclip, Sparkles, ArrowUp} from 'lucide-react'
 import Button from './ui/Button'
+import {savePreview} from '@/lib/savePreview'
 
 export default function Composer({
   projectId, tasks, preview, setPreview, onDone,
@@ -93,34 +94,6 @@ function submit(useAI: boolean) {
         }
         setGenerating(false)
     }
-    function discard() {
-        setPreview([])
-    }
-    async function keep() {
-        setSaving(true)
-        const realId = new Map()
-        for (const t of preview) {
-            realId.set(t.id, crypto.randomUUID())
-        }
-        const rows = preview.map((t, i) => ({
-            id: realId.get(t.id),
-            task_name: t.task_name,
-            parent_task_id: t.parent_task_id ? (realId.get(t.parent_task_id) ?? t.parent_task_id) : null,
-            project_id: t.project_id,
-            created_at: new Date(Date.now()+i).toISOString(),
-        }))
-        const { error } = await supabase.from('tasks').insert(rows)
-        if (error) {
-            console.error(error)
-            setMessage('Could not save the tasks')
-        } else {
-            setPreview([])
-            setDescription('')
-            router.refresh()
-            onDone?.()
-        }
-        setSaving(false)
-    }
 
   return (
     <div className="flex flex-col gap-2">
@@ -171,10 +144,7 @@ function submit(useAI: boolean) {
 {message && <p className="">{message}</p>}
       {preview.length > 0 && (
   <div className="flex gap-2 items-center">
-    <Button onClick={keep} disabled={saving}>
-      {saving ? 'Saving...' : 'Saved'}
-    </Button>
-    <button onClick={discard}>Discard</button>
+    
   </div>
 )}
 
