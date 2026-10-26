@@ -4,15 +4,17 @@
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useState } from 'react'
-import { Trash2 } from 'lucide-react'
+import { Trash2, Star } from 'lucide-react'
 const supabase = createClient()
 
 export default function Checkbox({
   task,
   descendantIds,
+  onAiExtend,
 }: {
   task: { id: string; task_name: string; completed: boolean; task_date: string; task_time: string }
   descendantIds: string[]
+  onAiExtend?: (name:string)=>void
 }) {
   const router = useRouter()
   const [checked, setChecked] = useState(task.completed)
@@ -87,7 +89,7 @@ export default function Checkbox({
   return (
     <li className="flex items-center gap-3 min-w-0 flex-1">
       <input type="checkbox" checked={checked} onChange={toggle} />
-      <span onClick={() => setExpanded(true)} className="text-sm truncate cursor-pointer">{task.task_name}</span>
+      <span onClick={() => setExpanded(true)} className="text-sm line-clamp-2 cursor-pointer">{task.task_name}</span>
       {expanded && (
         <>
           <div className="fixed inset-0 z-10" onClick={() => setExpanded(false)} />
@@ -110,7 +112,17 @@ export default function Checkbox({
                 onChange={(e) => { setDate(e.target.value); saveDate(e.target.value) }}
                 className="text-xs text-muted border border-line rounded-md px-2 h-7 w-fit"
               />
-              <button onClick={deleteTask} className="text-muted hover:text-danger">
+              
+                {onAiExtend && (
+  <button
+    onClick={() => { onAiExtend(task.task_name); setExpanded(false) }}
+    className="text-xs text-accent hover:underline"
+  >
+   <Star size={16} /> Add steps with AI
+  </button>
+)}
+<button onClick={deleteTask} className="text-muted hover:text-danger">
+
                 <Trash2 size={16} />
               </button>
             </div>

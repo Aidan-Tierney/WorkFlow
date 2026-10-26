@@ -15,13 +15,17 @@ const taskTreeSchema = z.object({
 })
 
 
-export async function generateTaskTree(description: string, pdf?:Uint8Array){
+export async function generateTaskTree(description: string, pdf?:Uint8Array, outline?:string){
     const assignmentText=pdf
+    
     ? `See the attached PDF. Extra notes from the student: ${description}`
     : description
-    const content: any[] = [
-        {type: 'text', text: `<mode>new_tree</mode>\n<assignment>${assignmentText}</assignment.`},
-    ]
+    const text = `<existing_tree>
+${outline || '(empty, this project has no tasks yet)'}
+</existing_tree>
+<request>${assignmentText}</request>`
+const content: any[] = [{ type: 'text', text }]
+
     if (pdf){
         content.push({ type: 'file', data: pdf, mediaType: 'application/pdf' })
     }

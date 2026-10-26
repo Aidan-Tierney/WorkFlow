@@ -5,6 +5,7 @@ import Button from '@/app/ui/Button'
 import { generateTreeAction } from './actions/ai'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { buildOutline } from '@/app/tree'
 
 export default function ProjectBoard({
     tasks, ghostIds, projectId,
@@ -18,13 +19,18 @@ export default function ProjectBoard({
     const supabase = createClient()
     const [file, setFile] = useState<File | null>(null)
 
+
     async function generate() {
         setGenerating(true)
         setMessage('')
         const formData = new FormData()
         formData.append('description', description)
         if (file) formData.append('file', file)
+        const { outline, aliasToId } = buildOutline(tasks)
+        formData.append('outline', outline)
         const result = await generateTreeAction(formData)
+
+
 
 
         if (result.error) {
@@ -32,10 +38,23 @@ export default function ProjectBoard({
         } else if (result.status !== 'ok') {
             setMessage(result.message ?? 'Nothing to add')
         } else {
+            const newIds = new Set(result.tasks!.map((t) => t.id))
+            const broken = result.tasks!.some((t) =>
+                t.parent_id !== null && !aliasToId.has(t.parent_id) && !newIds.has(t.parent_id)
+            )
+            if (broken) {
+                setMessage('The AI made a mistake. Try generating again.')
+                setGenerating(false)
+                return
+            }
             setPreview(result.tasks!.map((t) => ({
                 id: `ai-${t.id}`,
                 task_name: t.name,
-                parent_task_id: t.parent_id ? `ai-${t.parent_id}` : null,
+                parent_task_id:
+                    t.parent_id === null ? null
+                        : aliasToId.has(t.parent_id) ? aliasToId.get(t.parent_id)
+                            : `ai-${t.parent_id}`,
+
                 project_id: projectId,
                 completed: false,
             })))
@@ -54,7 +73,7 @@ export default function ProjectBoard({
         const rows = preview.map((t) => ({
             id: realId.get(t.id),
             task_name: t.task_name,
-            parent_task_id: t.parent_task_id ? realId.get(t.parent_task_id) : null,
+            parent_task_id: t.parent_task_id ? (realId.get(t.parent_task_id) ?? t.parent_task_id) : null,
             project_id: t.project_id,
         }))
         const { error } = await supabase.from('tasks').insert(rows)
@@ -95,7 +114,13 @@ export default function ProjectBoard({
 
                 {message && <p className="text-sm text-muted">{message}</p>}
             </div>
-            <Workflowview tasks={tasks} ghostIds={ghostIds} previewTasks={preview} />
+            <Workflowview
+                tasks={tasks}
+                ghostIds={ghostIds}
+                previewTasks={preview}
+                onAiExtend={(name) => setDescription(`Add steps under "${name}": `)}
+            />
+
             {preview.length > 0 && (
                 <div className="flex gap-2">
                     <Button onClick={keep} disabled={saving}>

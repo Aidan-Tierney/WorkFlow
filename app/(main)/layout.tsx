@@ -28,7 +28,7 @@ if (!data.user) {
  )}
 </div>
         <SidebarAddtask />
-        <nav className="flex flex-col gap-1 mt-4">
+        <nav className="flex flex-col gap-1 mt-4 min-w-0">
           <NavLink href="/" label="Dashboard" icon={<Inbox size={18} />} />
           <NavLink href="/calendar" label="Calendar" icon={<Calendar size={18} />} />
           <NavLink href="/projects" label="Projects" icon={<Folder size={18} />} />

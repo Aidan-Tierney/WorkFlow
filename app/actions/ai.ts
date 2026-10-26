@@ -1,7 +1,6 @@
 'use server'
 import { createClient } from "@/lib/supabase/server"
 import { generateTaskTree } from "@/lib/ai"
-import { isFileUIPart } from "ai"
 
 export async function generateTreeAction(formData: FormData) {
     const supabase = await createClient()
@@ -9,6 +8,11 @@ export async function generateTreeAction(formData: FormData) {
     const description = (formData.get('description') as string) ?? ''
 const file = formData.get('file') as File | null
 const hasFile= file && file.size>0
+const outline = (formData.get('outline') as string) ?? ''
+
+ if (!data.user) {
+        return { error: 'Not logged in' }
+    }
     if (!hasFile && !description.trim()){
         return {error: 'Type a description or attach a PDF'}
     }
@@ -18,12 +22,29 @@ const hasFile= file && file.size>0
 if (hasFile && file.size > 4 * 1024 *1024){
     return {error: 'PDF must be under 4 MB'}
 }
-    if (!data.user) {
-        return { error: 'Not logged in' }
+const DAILY_LIMIT = 2   // ← 2 for testing; change to your real number after
+
+       // how many generations in the last 24 hours?
+    const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+    const { count } = await supabase
+        .from('ai_usage')
+        .select('*', { count: 'exact', head: true })
+        .gte('created_at', since)
+
+    if ((count ?? 0) >= DAILY_LIMIT) {
+        return { error: `You've used all ${DAILY_LIMIT} AI generations for today. Try again later.` }
     }
+
+    // record this one BEFORE calling the AI
+    const { error: usageError } = await supabase.from('ai_usage').insert({})
+    if (usageError) {
+        console.error(usageError)
+        return { error: 'Could not start generation' }
+    }
+
     try {
         const pdf = hasFile ? new Uint8Array(await file.arrayBuffer()) : undefined
-const result = await generateTaskTree(description, pdf)
+const result = await generateTaskTree(description, pdf, outline)
 
         console.log(JSON.stringify(result, null, 2))
         return { status: result.status, message: result.message, tasks: result.tasks }
