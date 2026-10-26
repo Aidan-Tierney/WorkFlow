@@ -213,14 +213,15 @@ useEffect(() => {
                                 height: BOX_HEIGHT
                             }}
                         >
-                            <Checkbox task={task} descendantIds={getDescendantIds(task.id, tasks)} onAiExtend={onAiExtend} />
-                            {!task.completed && (
+                             {!task.completed && (
                                 <button
                                     onClick={() => setDraftParentId(task.id)}
                                     className="text-muted hover:text-accent">
                                     <Plus size={16} />
                                 </button>
                             )}
+                            <Checkbox task={task} descendantIds={getDescendantIds(task.id, tasks)} onAiExtend={onAiExtend} boxRight />
+                           
                         </div>
 
 

@@ -5,15 +5,20 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useState } from 'react'
 import { Trash2, Star } from 'lucide-react'
+import Link from 'next/link'
 const supabase = createClient()
 
 export default function Checkbox({
   task,
   descendantIds,
+  href,
+  boxRight,
   onAiExtend,
 }: {
   task: { id: string; task_name: string; completed: boolean; task_date: string; task_time: string }
   descendantIds: string[]
+  href?: string
+  boxRight?: boolean
   onAiExtend?: (name:string)=>void
 }) {
   const router = useRouter()
@@ -36,7 +41,7 @@ export default function Checkbox({
       setName(task.task_name)
       console.error(error)
     }
-    router.refresh
+    router.refresh()
   }
   async function saveDate(newDate: string) {
     const { error } = await supabase
@@ -44,10 +49,10 @@ export default function Checkbox({
       .update({ task_date: newDate || null })
       .eq('id', task.id)
     if (error) {
-      setName(task.task_date ?? '')
+      setDate(task.task_date ?? '')
       console.error(error)
     }
-    router.refresh
+    router.refresh()
   }
 
   async function deleteTask() {
@@ -75,7 +80,7 @@ export default function Checkbox({
     //Screen changes here
     const { error } = await supabase
       .from('tasks')
-      .update({ completed: newChecked })
+      .update({ completed: newChecked, completed_at: newChecked ? new Date().toISOString() : null})
       .in('id', ids)
     if (error) {
       setChecked(!newChecked)
@@ -88,12 +93,18 @@ export default function Checkbox({
 
   return (
     <li className="flex items-center gap-3 min-w-0 flex-1">
-      <input type="checkbox" checked={checked} onChange={toggle} />
+        <input type="checkbox" className={`w-4 h-4 accent-accent cursor-pointer shrink-0 ${boxRight ? 'order-last ml-auto mr-1' : ''}`} checked={checked} onChange={toggle} />
+
+      {href ? (
+        <Link href={href} className="text-sm line-clamp-2 ">{task.task_name}</Link>
+) : (
+        
       <span onClick={() => setExpanded(true)} className="text-sm line-clamp-2 cursor-pointer">{task.task_name}</span>
+)}
       {expanded && (
         <>
           <div className="fixed inset-0 z-10" onClick={() => setExpanded(false)} />
-          <div className="left-0 absolute top-0 z-20 w-72 bg-white border border-line rounded-xl shadow-lg p-3 flex flex-col gap-2">
+          <div className="left-1/2 -translate-x-1/2 absolute top-(-1) z-20 w-72 bg-white border border-line rounded-xl shadow-lg p-3 flex flex-col gap-2">
             <textarea
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -116,7 +127,7 @@ export default function Checkbox({
                 {onAiExtend && (
   <button
     onClick={() => { onAiExtend(task.task_name); setExpanded(false) }}
-    className="text-xs text-accent hover:underline"
+    className="text-xs text-accent "
   >
    <Star size={16} /> Add steps with AI
   </button>

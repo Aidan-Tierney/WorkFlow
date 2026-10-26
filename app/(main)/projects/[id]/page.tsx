@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import Addtask from '@/app/Addtask'
 import { layoutTasks, withAncestors } from '@/app/tree'
 import ProjectBoard from '@/app/ProjectBoard'
+import ProjectTitle from '@/app/ProjectTitle'
 export default async function Projectpage({
   params,
 }: {
@@ -30,8 +31,8 @@ const visible = withAncestors(tasks.filter((t) => !t.completed), tasks)
 const ghostIds = new Set(visible.filter((t) => t.completed).map((t)=> t.id))
 
   return (
-    <div className="w-full p-8 ">
-      <h1 className="text-xl font-semibold">{project.project_name}</h1>
+    <div className="w-full ">
+      <ProjectTitle id={project.id} name={project.project_name} />
 <ProjectBoard tasks={visible} ghostIds={ghostIds} projectId={id} />
 
 

@@ -10,12 +10,14 @@ export default function SidebarAddtask() {
 
         return (
             <>
+            <div className='mt-3'>
             <button onClick={() => setOpen(true)} className="hover:bg-black/5 rounded-lg w-full cursor-pointer flex items-center gap-[6px] h-9 px-[6px] text-sm font-medium text-accent">
-                <span className="w-6 h-6 rounded-full bg-accent text-white flex items-center justify-center">
+                <span className=" w-6 h-6 rounded-full bg-accent text-white flex items-center justify-center">
                     <Plus size={16} />
                 </span>
                 Add task
             </button>
+            </div>
 {open && (
     <>
     <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />

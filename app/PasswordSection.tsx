@@ -49,7 +49,7 @@ export default function PasswordSection() {
   }
 
   return (
-    <div className="flex flex-col gap-2 max-w-sm">
+    <div className="flex flex-col gap-2 max-w-sm items-start">
       <Input type="password" autoComplete="current-password" placeholder="Current password"
         value={current} onChange={(e) => setCurrent(e.target.value)} />
       <Input type="password" autoComplete="new-password" placeholder="New password"

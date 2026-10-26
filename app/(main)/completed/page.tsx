@@ -28,11 +28,25 @@ for (const t of done){
 const visible = tasks.filter((t)=> ids.has(t.id))
 
     const ghostIds= new Set(visible.filter((t) => !t.completed).map((t)=> t.id))
+    const roots  = visible.filter((t) => !t.parent_task_id)
+const others = visible.filter((t) => t.parent_task_id)
+
+function lastDone(root: any) {
+  const ids = [root.id, ...getDescendantIds(root.id, visible)]
+  const times = visible
+    .filter((t) => ids.includes(t.id) && t.completed_at)
+    .map((t) => t.completed_at)
+  return times.sort().at(-1) ?? ''
+}
+
+roots.sort((a, b) => lastDone(b).localeCompare(lastDone(a)))
+const ordered = [...roots, ...others]
+
      return (
-    <div className="p-8 w-full">
-      <h1 className="text-2xl font-bold">Completed Tasks</h1>
+    <div >
+      <h1 className="mb-8 text-3xl font-semibold">Completed Tasks</h1>
       <div>
-        <Workflowview tasks={visible} ghostIds={ghostIds} />
+        <Workflowview tasks={ordered} ghostIds={ghostIds} />
       </div>
     </div>
   )

@@ -17,7 +17,7 @@ const ghostIds = new Set(visible.filter((t) => t.completed).map((t)=> t.id))
 
  return (
   <div>
-  <h1 className="text-3xl font-semibold"> Dashboard</h1>
+  <h1 className="mb-8 text-3xl font-semibold"> Dashboard</h1>
     <DashboardBoard tasks={visible} ghostIds={ghostIds} />
     </div>
 )

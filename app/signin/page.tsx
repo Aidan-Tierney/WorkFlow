@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
 import Button from '@/app/ui/Button'
 import Input from '@/app/ui/Input'
+import AuthCard from '../AuthCard'
 
 export default function Signin() {
   const [email, setEmail] = useState('')
@@ -33,8 +34,16 @@ export default function Signin() {
   }
 
   return (
-    <div className="max-w-sm mx-auto p-8 flex flex-col gap-3">
-      <h1 className="text-xl font-semibold">Sign in</h1>
+    <AuthCard title="Welcome Back">
+      <form
+  onSubmit={(e) => {
+    e.preventDefault()
+    handleSubmit()
+  }}
+  className="flex flex-col gap-3"
+>
+
+
 
       <Input
         type="email"
@@ -51,15 +60,18 @@ export default function Signin() {
       />
 
       <Button
-        onClick={handleSubmit}
-        className="w-full bg-red-500 text-white rounded px-2 py-1"
+        type="submit"
+       
       >
         Sign in
       </Button>
+      </form>
 <p className="text-sm">
   Don&apos;t have an account? <Link href="/signup" className="underline">Sign up</Link>
 </p>
       {errorMessage && <p className="text-sm text-red-600">{errorMessage}</p>}
-    </div>
+      
+    </AuthCard>
+    
   )
 }

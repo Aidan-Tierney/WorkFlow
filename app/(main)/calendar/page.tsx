@@ -26,12 +26,16 @@ export default async function Calendar() {
   // C. one section per day
   return (
     <div className="max-w-3xl mx-auto p-8">
-      <h1 className="text-2xl font-bold">Upcoming</h1>
+      <h1 className="text-3xl font-semibold ">Upcoming</h1>
       {days.map((day) => (
         <section key={day} className="mt-6">
           <h2 className="text-sm font-semibold border-b border-line pb-2">{day}</h2>
           {(tasks ?? []).filter((t) => t.task_date===day).map((task) => (
-            <Checkbox key={task.id} task={task} descendantIds={[]} />
+           <div key={task.id} className="flex items-center h-10 px-2 rounded-lg hover:bg-black/5">
+  <Checkbox task={task} descendantIds={[]} href={task.project_id ? `/projects/${task.project_id}` : '/'}
+/>
+</div>
+
           ))}
           <DayAddTask day={day} />
         </section>

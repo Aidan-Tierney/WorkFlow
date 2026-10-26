@@ -22,14 +22,14 @@ export default function SyncButton() {
 }
 
 return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 max-w-sm items-start">
         <Button
             disabled={syncing}
             onClick={handleSync}
         >
             {syncing ? 'Syncing...' : 'Sync Canvas'}
         </Button>
-        {message && <p>{message}</p>}
+        {message && <p className="text-xs text-muted">{message}</p>}
     </div>
 )
 }

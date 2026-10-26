@@ -31,7 +31,7 @@ export default function EmailSection({ currentEmail }: { currentEmail: string })
   }
 
   return (
-    <div className="flex flex-col gap-2 max-w-sm">
+    <div className="flex flex-col gap-2 max-w-sm items-start">
       <p className="text-sm">
         <span className="text-muted">Current email: </span>{currentEmail}
       </p>

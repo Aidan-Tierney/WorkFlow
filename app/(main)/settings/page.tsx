@@ -15,8 +15,8 @@ const displayName = user?.user_metadata?.display_name ?? ''
     .maybeSingle()
 
   return (
-    <div className="max-w-2xl mx-auto p-8 flex flex-col gap-8">
-  <h1 className="text-2xl font-bold">Settings</h1>
+    <div className="max-w-2xl mx-auto flex flex-col gap-8">
+  <h1 className="text-3xl font-semibold">Settings</h1>
 
   <section className="flex flex-col gap-3">
     <h2 className="font-semibold">Profile</h2>
@@ -31,10 +31,10 @@ const displayName = user?.user_metadata?.display_name ?? ''
 
   <section className="flex flex-col gap-3 border-t border-line pt-6">
     <h2 className="font-semibold">Canvas</h2>
-    {connection ? <p>Connected to {connection.canvas_url}</p> : <p>Not connected</p>}
+    {connection ? <p className="text-sm"><span className="text-muted">Connected to </span>{connection.canvas_url}</p> : <p>Not connected</p>}
 
-      <CanvasConnect />
-      <Syncbutton />
+      <CanvasConnect /> <Syncbutton />
+      
   </section>
 </div>
   )

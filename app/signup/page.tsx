@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
 import Button from '@/app/ui/Button'
 import Input from '@/app/ui/Input'
+import AuthCard from '../AuthCard'
 
 export default function Signup() {
   const [email, setEmail] = useState('')
@@ -33,15 +34,14 @@ password: password,
   }
 
   return (
-    <div className="max-w-sm mx-auto p-8 flex flex-col gap-3">
-      <h1 className="text-xl font-semibold">Sign up</h1>
+<AuthCard title="Welcome to WorkFlow">
+
 
       <Input
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Email"
-        className="w-full border border-gray-300 rounded px-2 py-1"
       />
 
       <Input
@@ -49,12 +49,11 @@ password: password,
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"
-        className="w-full border border-gray-300 rounded px-2 py-1"
       />
 
       <Button
         onClick={handleSubmit}
-        className="w-full bg-red-500 text-white rounded px-2 py-1"
+
       >
         Sign up
       </Button>
@@ -63,6 +62,6 @@ password: password,
 </p>
 
       {errorMessage && <p className="text-sm text-red-600">{errorMessage}</p>}
-    </div>
+    </AuthCard>
   )
 }

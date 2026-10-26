@@ -25,7 +25,7 @@ async function handleKeep(){
 }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-8">
       <Composer tasks={tasks} projectId={projectId} preview={preview} setPreview={setPreview}/>
       <Workflowview ghostIds={ghostIds} tasks={tasks} previewTasks={preview} onKeep={handleKeep} onRemove={handleRemove}/>
     </div>

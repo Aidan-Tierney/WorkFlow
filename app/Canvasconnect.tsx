@@ -31,7 +31,7 @@ export default function CanvasConnect() {
   }
 
   return (
-    <div>
+    <div className="flex flex-col gap-2 max-w-sm items-start">
       <Input type="text" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="Canvas URL" />
       <Input type="password" value={token} onChange={(e) => setToken(e.target.value)} placeholder="Canvas Token" />
       <Button disabled={saving} onClick={save}>

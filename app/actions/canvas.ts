@@ -83,7 +83,7 @@ export async function syncCanvas() {
         }
         const { error: updateError } = await supabase
         .from('tasks')
-        .update({ completed: true })
+        .update({ completed: true, completed_at: new Date().toISOString()})
         .in('canvas_assignment_id', submittedIds)
 
         if (updateError) {

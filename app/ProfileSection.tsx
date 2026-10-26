@@ -29,7 +29,7 @@ export default function ProfileSection({ initialName }: { initialName: string })
   }
 
   return (
-    <div className="flex flex-col gap-1 max-w-sm">
+    <div className="flex flex-col items-start gap-2 max-w-sm">
       <label className="text-sm text-muted">Display name</label>
       <Input
         value={name}
