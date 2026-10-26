@@ -1,7 +1,7 @@
 'use server'
 import { createClient } from "@/lib/supabase/server"
 import { generateTaskTree } from "@/lib/ai"
-import { throwIfDisallowedDynamic } from "next/dist/server/app-render/dynamic-rendering"
+import { DAILY_LIMIT } from "@/lib/limits"
 
 export async function generateTreeAction(formData: FormData) {
     const supabase = await createClient()
@@ -23,7 +23,6 @@ const outline = (formData.get('outline') as string) ?? ''
 if (hasFile && file.size > 4 * 1024 *1024){
     return {error: 'PDF must be under 4 MB'}
 }
-const DAILY_LIMIT = 20   // ← 2 for testing; change to your real number after
 
        // how many generations in the last 24 hours?
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()

@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import {useState, useEffect} from 'react'
 import { generateTreeAction } from './actions/ai'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
@@ -7,6 +7,7 @@ import { buildOutline } from '@/app/tree'
 import {Paperclip, Sparkles, ArrowUp} from 'lucide-react'
 import Button from './ui/Button'
 import {savePreview} from '@/lib/savePreview'
+import { DAILY_LIMIT } from '@/lib/limits'
 
 export default function Composer({
   projectId, tasks, preview, setPreview, onDone,
@@ -25,6 +26,19 @@ export default function Composer({
       const router = useRouter()
       const supabase = createClient()
     const [file, setFile] = useState<File | null>(null)
+    const [left, setLeft] = useState<number | null>(null)
+
+async function loadLeft() {
+  const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+  const { count } = await supabase
+    .from('ai_usage')
+    .select('*', { count: 'exact', head: true })
+    .gte('created_at', since)
+  setLeft(DAILY_LIMIT - (count ?? 0))
+}
+
+useEffect(() => { loadLeft() }, [])
+
   
   async function addTask() {
   const name = description.trim()
@@ -77,6 +91,7 @@ function submit(useAI: boolean) {
             )
             if (broken) {
                 setMessage('The AI made a mistake. Try generating again.')
+                loadLeft()
                 setGenerating(false)
                 return
             }
@@ -92,6 +107,7 @@ function submit(useAI: boolean) {
                 completed: false,
             })))
         }
+        loadLeft()
         setGenerating(false)
     }
 
@@ -130,10 +146,14 @@ function submit(useAI: boolean) {
     </div>
 
     <div className="flex items-center gap-2">
-      <button onClick={() => submit(true)} disabled={generating || (!description.trim() && !file)}
+      <button onClick={() => submit(true)} disabled={generating || (!description.trim() && !file) || left===0}
         className="flex items-center gap-1 text-sm text-accent hover:underline disabled:opacity-50">
         <Sparkles size={16} /> {generating ? 'Planning...' : 'Plan with AI'}
+
       </button>
+     <span className="text-xs text-muted w-12 text-left">
+  {left === null ? '' : `${left} left`}
+</span>
       <button onClick={() => submit(false)} disabled={saving || !description.trim() || !!file}
         className="w-8 h-8 rounded-lg bg-accent text-white flex items-center justify-center disabled:opacity-50">
         <ArrowUp size={16} />
