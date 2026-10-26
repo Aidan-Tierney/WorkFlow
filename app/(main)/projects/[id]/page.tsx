@@ -32,9 +32,6 @@ const ghostIds = new Set(visible.filter((t) => t.completed).map((t)=> t.id))
   return (
     <div className="w-full p-8 ">
       <h1 className="text-xl font-semibold">{project.project_name}</h1>
-      <div className="max-w-md">
-        <Addtask projectId={id}/>
-      </div>
 <ProjectBoard tasks={visible} ghostIds={ghostIds} projectId={id} />
 
 

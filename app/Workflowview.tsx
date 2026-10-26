@@ -21,6 +21,7 @@ export default function Workflowview({ tasks, ghostIds, previewTasks, onAiExtend
     const baseTasks = [...tasks, ...(previewTasks ?? [])]
     const [width, setWidth] = useState<number | null>(null)
     const containerRef = useRef<HTMLDivElement>(null)
+    
 
 useEffect(() => {
   const el = containerRef.current

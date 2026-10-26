@@ -6,6 +6,7 @@ import NavLink  from '../ui/NavLink'
 import Sidebar from '../Sidebar'
 import { Inbox, Folder, Calendar, CircleCheck, CircleDashed } from "lucide-react";
 import SidebarProjects from '../SidebarProjects'
+import PreviewProvider from '../PreviewContext'
 export default async function MainLayout({
   children,
 }: {
@@ -26,6 +27,7 @@ if (!data.user) {
 // data.user is the user object if logged in, or null if not
   return (
     <div className="min-h-screen flex">
+      <PreviewProvider>
       <Sidebar>
         <div className="flex justify-between items-center">
         
@@ -46,6 +48,7 @@ if (!data.user) {
       </Sidebar>
 
       <main className="flex-1 p-8 min-w-0">{children}</main>
+      </PreviewProvider>
     </div>
   )
 }

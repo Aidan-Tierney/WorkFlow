@@ -1,10 +1,12 @@
 'use client'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Plus } from 'lucide-react'
-import Addtask from './Addtask'
+import Composer from '@/app/Composer'
+import { PreviewContext } from './PreviewContext'
 
 export default function SidebarAddtask() {
     const [open, setOpen] = useState(false)
+    const {preview, setPreview} = useContext(PreviewContext)
 
         return (
             <>
@@ -17,8 +19,8 @@ export default function SidebarAddtask() {
 {open && (
     <>
     <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-    <div className="fixed top-24 left-1/2 -translate-x-1/2 z-50 w-full max-w-xl shadow-lg rounded-xl">
-      <Addtask onCancel={() => setOpen(false)} />
+    <div className="bg-white p-3 fixed top-24 left-1/2 -translate-x-1/2 z-50 w-full max-w-xl shadow-lg rounded-xl">
+         <Composer onDone={() => setOpen(false)} tasks={[]} projectId={null} preview={preview} setPreview={setPreview}/>
     </div>
   </>
 )}
