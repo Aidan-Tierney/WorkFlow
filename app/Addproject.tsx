@@ -4,9 +4,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import Button from '@/app/ui/Button'
-import Input from '@/app/ui/Input'
-import {Plus} from 'lucide-react'
+import {Plus,Hash} from 'lucide-react'
 const supabase = createClient()
 export default function Addproject() {
   const [title, setTitle] = useState('')
@@ -24,6 +22,9 @@ export default function Addproject() {
 
     if (error) { setTitle(title)
        console.error(error) }
+      else {
+      setOpen(false)
+      }
     router.refresh()
     setSaving(false)
   }
@@ -37,18 +38,21 @@ export default function Addproject() {
       </button>
     )
   }
-
   return (
-    <div>
-      <Input
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="Add a project"
-        
-      />
-      <Button disabled={saving} onClick={add}>
-        {saving ? 'Adding...' : 'Add'}
-      </Button>
-    </div>
-  )
+  <div className="flex items-center gap-3 h-10 px-2">
+    <Hash size={16} className="text-muted" />
+    <input
+      value={title}
+      onChange={(e) => setTitle(e.target.value)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') add()
+        if (e.key === 'Escape') setOpen(false)
+      }}
+      placeholder="Project name"
+      autoFocus
+      className="flex-1 text-sm outline-none bg-transparent"
+    />
+  </div>
+)
+
 }

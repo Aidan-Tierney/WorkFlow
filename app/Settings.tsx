@@ -15,7 +15,8 @@ export default function Usermenu({
     email: string;
     name:string;
 }) {
-    const firstLetter = email[0].toUpperCase()
+    const firstLetter = name[0].toUpperCase()
+    const firstName = name.split(" ")[0]
     const router = useRouter()
     const [open, setOpen] = useState(false)
     async function handleSignOut() {
@@ -25,11 +26,11 @@ export default function Usermenu({
     }
     return (
         <div className="relative">
-           <button onClick={() => setOpen(!open)} className="flex items-center gap-2 px-2 h-9 rounded-lg hover:bg-black/5">
-  <span className="w-7 h-7 rounded-full bg-accent text-white text-sm flex items-center justify-center">
+           <button onClick={() => setOpen(!open)} className="flex items-center gap-[6px] px-[6px] h-10 rounded-lg hover:bg-black/5">
+  <span className="w-6 h-6 rounded-full bg-accent text-white text-sm flex items-center justify-center">
     {firstLetter}
   </span>
-  <span className="text-sm font-medium truncate max-w-[8rem]">{name}</span>
+  <span className="text-sm font-medium truncate max-w-[8rem]">{firstName}</span>
   <ChevronDown size={14} className="text-muted" />
 </button>
 

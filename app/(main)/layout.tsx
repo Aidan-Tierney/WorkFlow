@@ -19,7 +19,7 @@ const emailname = data.user?.email
 const displayName = data.user?.user_metadata?.display_name || emailname
 const {data: projects} = await supabase
 .from('projects')
-.select('id, project_name')
+.select('id, project_name, canvas_course_id')
 .order('created_at')
 if (!data.user) {
     redirect('/signin')   // stops here, sends the visitor to /join

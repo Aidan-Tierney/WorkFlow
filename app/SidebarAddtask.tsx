@@ -10,7 +10,7 @@ export default function SidebarAddtask() {
 
         return (
             <>
-            <button onClick={() => setOpen(true)} className="flex items-center gap-2 h-9 px-1 text-sm font-medium text-accent">
+            <button onClick={() => setOpen(true)} className="hover:bg-black/5 rounded-lg w-full cursor-pointer flex items-center gap-[6px] h-9 px-[6px] text-sm font-medium text-accent">
                 <span className="w-6 h-6 rounded-full bg-accent text-white flex items-center justify-center">
                     <Plus size={16} />
                 </span>
