@@ -20,6 +20,7 @@ export default async function Projectpage({
     .from('tasks')
     .select()
     .eq('project_id', id)
+    .order('created_at')
 
   if (!project) {
     return <p>Project not found</p>

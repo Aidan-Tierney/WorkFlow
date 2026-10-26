@@ -70,11 +70,12 @@ export default function ProjectBoard({
         for (const t of preview) {
             realId.set(t.id, crypto.randomUUID())
         }
-        const rows = preview.map((t) => ({
+        const rows = preview.map((t, i) => ({
             id: realId.get(t.id),
             task_name: t.task_name,
             parent_task_id: t.parent_task_id ? (realId.get(t.parent_task_id) ?? t.parent_task_id) : null,
             project_id: t.project_id,
+            created_at: new Date(Date.now()+i).toISOString(),
         }))
         const { error } = await supabase.from('tasks').insert(rows)
         if (error) {

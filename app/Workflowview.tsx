@@ -12,6 +12,7 @@ const COLUMN_WIDTH = 280
 const ROW_HEIGHT = 80
 const BOX_WIDTH = 240
 const BOX_HEIGHT = 60
+const LEFT_GUTTER = 40
 
 
 
@@ -41,9 +42,10 @@ useEffect(() => {
             project_id: draftParent.project_id,
         }]
         : baseTasks
-    const maxColumns= width
-    ? Math.max(1, Math.floor((width - BOX_WIDTH) / COLUMN_WIDTH) + 1)
-    : Infinity
+    const maxColumns = width
+  ? Math.max(1, Math.floor((width - LEFT_GUTTER - BOX_WIDTH) / COLUMN_WIDTH) + 1)
+  : Infinity
+
     const { positions, wrapped } = layoutTasks(shownTasks, maxColumns)
     const wrapInfo = new Map(wrapped.map((w) => [w.childId, w]))
 
@@ -55,7 +57,7 @@ useEffect(() => {
     }
 
     function boxLeft(pos: { column: number }) {
-        return (maxColumn - pos.column) * COLUMN_WIDTH
+        return LEFT_GUTTER + (maxColumn - pos.column) * COLUMN_WIDTH
     }
     function boxTop(pos: { row: number }) {
         return pos.row * ROW_HEIGHT
@@ -66,9 +68,12 @@ useEffect(() => {
             className="w-full">
             <div
                 className="relative ml-auto"
-            style={{ width: (maxColumn + 1) * COLUMN_WIDTH, height: (maxRow + 1) * ROW_HEIGHT }}
+            style={{ width: (maxColumn + 1) * COLUMN_WIDTH+ LEFT_GUTTER, height: (maxRow + 1) * ROW_HEIGHT }}
         >
-            <svg className="absolute inset-0 pointer-events-none" width={(maxColumn + 1) * COLUMN_WIDTH} height={(maxRow + 1) * ROW_HEIGHT}>
+            <svg className="absolute inset-0 pointer-events-none"
+             width={(maxColumn + 1) * COLUMN_WIDTH + LEFT_GUTTER}
+             height={(maxRow + 1) * ROW_HEIGHT}
+             >
                 {shownTasks.map((task) => {
 
                     if (!task.parent_task_id) return null
@@ -76,16 +81,20 @@ useEffect(() => {
                     const parent = positions.get(task.parent_task_id)
                     if (!child || !parent) return null
                     const wrap = wrapInfo.get(task.id)
-                    if (wrap) {
-                        const px = boxLeft(parent) + BOX_WIDTH / 2                         // parent's center
-                        const py = boxTop(parent) + BOX_HEIGHT                             // parent's bottom
-                        const gapY = boxTop({ row: wrap.bandRow - 1 }) + BOX_HEIGHT / 2    // middle of the gap row
-                        const cx = boxLeft(child) + BOX_WIDTH / 2                          // child's center
-                        const cy = boxTop(child)                                           // child's top
+                    if (wrap) {                            // parent's center
+const pLeft = boxLeft(parent)                                   // parent's left edge
+const pMid = boxTop(parent) + BOX_HEIGHT / 2                    // parent's middle
+const lane = pLeft - (10 + (wrap.bandIndex % 4) * 8)            // this band's lane
+const gapY = boxTop({ row: wrap.bandRow - 1 }) + BOX_HEIGHT / 2 // middle of the gap row
+const right = boxLeft(child) + BOX_WIDTH                        // child's right edge
+const busX = right + (COLUMN_WIDTH - BOX_WIDTH) / 2             // the bus, right of the child
+const cy = boxTop(child) + BOX_HEIGHT / 2                       // child's middle
                         return (
                             <path
                                 key={task.id}
-                                d={`M ${px} ${py} V ${gapY} H ${cx} V ${cy}`}
+                                d={`M ${pLeft} ${pMid} H ${lane} V ${gapY} H ${busX} V ${cy} H ${right}`}
+
+
                                 stroke="gray"
                                 fill="none"
                                 strokeWidth={2}
@@ -118,7 +127,7 @@ useEffect(() => {
                 if (task.id.startsWith('ai-')) {
                     return (
                         <div key={task.id} className="absolute border rounded p-2 bg-white opacity-50 flex items-center text-sm"
-                            style={{ left: boxLeft(pos), top: boxTop(pos), width: BOX_WIDTH, height: BOX_HEIGHT }}
+                        style={{ left: boxLeft(pos), top: boxTop(pos), width: BOX_WIDTH, height: BOX_HEIGHT }}
                         >
                             <span className="line-clamp-2">{task.task_name}</span>
                         </div>

@@ -6,7 +6,7 @@ import Addtask from '../Addtask'
 import { withAncestors } from '../tree'
 export default async function Home() {
   const supabase = await createClient()
-  const { data: allTasks, error } = await supabase.from('tasks').select().is('project_id', null)
+  const { data: allTasks, error } = await supabase.from('tasks').select().is('project_id', null).order('created_at')
 const tasks = allTasks ?? []
 const visible = withAncestors(tasks.filter((t) => !t.completed), tasks)
 const ghostIds = new Set(visible.filter((t) => t.completed).map((t)=> t.id))

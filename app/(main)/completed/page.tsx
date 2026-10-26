@@ -7,6 +7,7 @@ export default async function Completedpage(){
     const { data:allTasks, error } = await supabase
     .from("tasks")
     .select()
+    .order('created_at')
 
     
     

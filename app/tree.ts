@@ -1,8 +1,8 @@
 type Position = { column: number; row: number }
-export function layoutTasks(allTasks: any[], maxColumns: number = Infinity) {   // CHANGED
-  const wrapped: {childId: string; parentId: string; bandRow: number}[]=[]
-    const postions = new Map<string, Position>()            // NEW
-  const later: any[] = []                                                          // NEW
+export function layoutTasks(allTasks: any[], maxColumns: number = Infinity) {  
+  const wrapped: {childId: string; parentId: string; bandRow: number; bandIndex: number}[]=[]
+  const later: { parentId: string; children: any[] }[] = []
+    const postions = new Map<string, Position>()                                                           // NEW
   let newrow = 0
 
   function place(task: any, depth: number): number {
@@ -10,12 +10,10 @@ export function layoutTasks(allTasks: any[], maxColumns: number = Infinity) {   
 
     // NEW: do the children fit in the next column?
     const fits = depth + 1 < maxColumns
-    if (!fits) {
-      for (const child of children) {
-        later.push(child)                                     // lay it out later, in a new band
-        wrapped.push({ childId: child.id, parentId: task.id, bandRow: 0 })
-      }
-    }
+    if (!fits && children.length > 0) {
+  later.push({ parentId: task.id, children })
+}
+
     const inline = fits ? children : []                       // only these get placed here
 
     let row: number
@@ -30,20 +28,27 @@ export function layoutTasks(allTasks: any[], maxColumns: number = Infinity) {   
     return row
   }
 
-  const roots = allTasks.filter((t) => !t.parent_task_id)
-  for (const root of roots) {
-    place(root, 0)
-  }
-
   // NEW: each wrapped branch becomes its own band, below everything so far
+const roots = allTasks.filter((t) => !t.parent_task_id)
+let bandCount=0
+for (const root of roots) {
+  place(root, 0)
+
+  // this tree's wrapped branches go RIGHT HERE, before the next tree
   while (later.length > 0) {
-    const branchRoot = later.shift()
-    newrow = newrow + 1      // one empty row as a gap, where the connector line runs
-    const entry = wrapped.find((w) => w.childId === branchRoot.id)
-if (entry) entry.bandRow = newrow
-    
-    place(branchRoot, 0)
+    later.sort((a, b) => postions.get(b.parentId)!.row - postions.get(a.parentId)!.row)
+    const group = later.shift()!
+    newrow = newrow + 1                       // one gap row, shared by the whole group
+    const bandRow = newrow
+    const bandIndex = bandCount
+    bandCount++
+    for (const child of group.children) {
+      wrapped.push({ childId: child.id, parentId: group.parentId, bandRow, bandIndex})
+      place(child, 0)
+    }
   }
+}
+
 
   return { positions: postions, wrapped }                     // CHANGED: return both
 }
