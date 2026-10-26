@@ -15,7 +15,7 @@ const mine   = data.filter((p) => !p.canvas_course_id)    // no canvas id
 const canvas = data.filter((p) => p.canvas_course_id)    // has a canvas id
  return (
   <div className="max-w-2xl mx-auto p-8">
-    <h1 className="text-2xl font-bold">Projects</h1>
+    <h1 className="text-3xl font-semibold">Projects</h1>
     <p className="text-sm font-semibold border-b border-line pb-2 mt-6">
       {mine.length} projects
     </p>
