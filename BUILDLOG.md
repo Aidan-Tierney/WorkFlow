@@ -27,7 +27,8 @@ is usually the slow way.
 
 ## 2026-09-21 (session 1)
 
-**Build:** Supabase Password: xPzwF$X4d6$hWKQ Worked with SQL editor and got my tables set up in supabase and hooked up supabase to visual coding studio. 
+**Build:** Supabase Password:
+Worked with SQL editor and got my tables set up in supabase and hooked up supabase to visual coding studio. 
 
 **Broke:** Ran into a lot of issues figuring out how to set up my table in the sql editor.
 
@@ -209,3 +210,7 @@ Broke: The whole tree duplicated. classname is supposed to be className and I fl
 Learned: SVG path commands (M,H,V); DRY acronym with helper functions. How to read npm audit rport. How to use React Flow
 
 Decided: To use Google blue and build the layout myself
+
+
+## 2026-10-21 - 26
+Ran out of time to finish app and didn't have time to do the build log. App is now submited 9:00pm
