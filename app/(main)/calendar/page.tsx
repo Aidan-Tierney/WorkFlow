@@ -6,7 +6,6 @@ const TIMEZONE = 'America/Chicago'
 const DAYS_AHEAD = 7
 
 export default async function Calendar() {
-  // A. the next N days as "YYYY-MM-DD" strings
   const days: string[] = []
   for (let i = 0; i < DAYS_AHEAD; i++) {
     const d = new Date()
@@ -14,16 +13,15 @@ export default async function Calendar() {
     days.push(d.toLocaleDateString('en-CA', { timeZone: TIMEZONE }))
   }
 
-  // B. tasks due in that range, not completed
+
   const supabase = await createClient()
   const { data: tasks } = await supabase
     .from('tasks')
     .select()
-    .gte('task_date', days[0])                   // on or after the first day
-    .lte('task_date', days[days.length -1])                   // on or before the last day
+    .gte('task_date', days[0])                 
+    .lte('task_date', days[days.length -1])                 
     .is('completed', false)
 
-  // C. one section per day
   return (
     <div className="max-w-3xl mx-auto p-8">
       <h1 className="text-3xl font-semibold ">Upcoming</h1>

@@ -12,7 +12,7 @@ export default function ProfileSection({ initialName }: { initialName: string })
 
   async function saveName() {
     const trimmed = name.trim()
-    if (trimmed === initialName) return            // nothing changed, so don't save
+    if (trimmed === initialName) return          
 
     setStatus('Saving...')
     const { error } = await supabase.auth.updateUser({
@@ -20,12 +20,12 @@ export default function ProfileSection({ initialName }: { initialName: string })
     })
     if (error) {
       console.error(error)
-      setName(initialName)                         // undo on failure
+      setName(initialName)                 
       setStatus('Could not save')
       return
     }
     setStatus('Saved')
-    router.refresh()                               // re-run the layout → the user menu shows the new name
+    router.refresh()                             
   }
 
   return (

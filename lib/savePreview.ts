@@ -16,5 +16,5 @@ export async function savePreview(preview: any[]) {
             created_at: new Date(Date.now()+i).toISOString(),
         }))
         const { error } = await supabase.from('tasks').insert(rows)
-  return error          // the caller decides what to do with it
+  return error          
 }

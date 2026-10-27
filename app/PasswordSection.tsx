@@ -13,7 +13,6 @@ export default function PasswordSection() {
   const supabase = createClient()
 
   async function changePassword() {
-    // guard clauses: catch problems BEFORE asking Supabase
     if (!current || !next || !confirm) {
       setMessage('Fill in all three fields.')
       return

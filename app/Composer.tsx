@@ -61,7 +61,7 @@ useEffect(() => { loadLeft() }, [])
   setSaving(false)
 }
 function submit(useAI: boolean) {
-  if (generating || saving) return          // ignore double-submits while busy
+  if (generating || saving) return        
   if (file || useAI) generate()
   else addTask()
 }

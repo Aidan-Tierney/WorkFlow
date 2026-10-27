@@ -11,8 +11,8 @@ export default function ProjectTitle({ id, name }: { id: string; name: string })
 
   async function save() {
     const trimmed = value.trim()
-    if (!trimmed || trimmed === name) {   // empty, or nothing changed
-      setValue(name)                      // put the original back
+    if (!trimmed || trimmed === name) {  
+      setValue(name)    
       return
     }
     const { error } = await supabase.from('projects').update({ project_name: trimmed }).eq('id', id)
@@ -21,7 +21,7 @@ export default function ProjectTitle({ id, name }: { id: string; name: string })
       setValue(name)
       return
     }
-    router.refresh()                      // so the sidebar shows the new name too
+    router.refresh()                  
   }
 
   return (

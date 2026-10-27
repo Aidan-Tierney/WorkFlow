@@ -98,14 +98,14 @@ useEffect(() => {
                         const parent = positions.get(task.parent_task_id)
                         if (!child || !parent) return null
                         const wrap = wrapInfo.get(task.id)
-                        if (wrap) {                            // parent's center
-                            const pLeft = boxLeft(parent)                                   // parent's left edge
-                            const pMid = boxTop(parent) + BOX_HEIGHT / 2                    // parent's middle
-                            const lane = pLeft - (10 + (wrap.bandIndex % 4) * 8)            // this band's lane
-                            const gapY = boxTop({ row: wrap.bandRow - 1 }) + BOX_HEIGHT / 2 // middle of the gap row
-                            const right = boxLeft(child) + BOX_WIDTH                        // child's right edge
-                            const busX = right + (COLUMN_WIDTH - BOX_WIDTH) / 2             // the bus, right of the child
-                            const cy = boxTop(child) + BOX_HEIGHT / 2                       // child's middle
+                        if (wrap) {                           
+                            const pLeft = boxLeft(parent)                                  
+                            const pMid = boxTop(parent) + BOX_HEIGHT / 2                   
+                            const lane = pLeft - (10 + (wrap.bandIndex % 4) * 8)           
+                            const gapY = boxTop({ row: wrap.bandRow - 1 }) + BOX_HEIGHT / 2 
+                            const right = boxLeft(child) + BOX_WIDTH                        
+                            const busX = right + (COLUMN_WIDTH - BOX_WIDTH) / 2             
+                            const cy = boxTop(child) + BOX_HEIGHT / 2                     
                             return (
                                 <path
                                     key={task.id}

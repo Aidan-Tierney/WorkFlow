@@ -16,8 +16,8 @@ async function handleKeep(){
       console.error(error)
       return                     
     }
-    setPreview([])                  // clear the draft
-    router.refresh()              // re-fetch from the server so the real ones show
+    setPreview([])                 
+    router.refresh()           
   }
   function handleRemove(id: string) {
   const gone = [id, ...getDescendantIds(id, preview)]

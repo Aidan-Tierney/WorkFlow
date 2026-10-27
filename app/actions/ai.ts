@@ -24,7 +24,7 @@ if (hasFile && file.size > 4 * 1024 *1024){
     return {error: 'PDF must be under 4 MB'}
 }
 
-       // how many generations in the last 24 hours?
+       
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
     const { count } = await supabase
         .from('ai_usage')
@@ -35,7 +35,7 @@ if (hasFile && file.size > 4 * 1024 *1024){
         return { error: `You've used all ${DAILY_LIMIT} AI generations for today. Try again later.` }
     }
 
-    // record this one BEFORE calling the AI
+   
     const { error: usageError } = await supabase.from('ai_usage').insert({})
     if (usageError) {
         console.error(usageError)
